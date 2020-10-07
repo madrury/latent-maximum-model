@@ -4,7 +4,29 @@ import pandas as pd
 
 
 class LatentMaximumDataGenerator:
+    """Sample a dataset from a data model:
 
+        y = a (s - 𝜇 + ε₁)**2 + 𝜷'·x' + ε₂
+        𝜇 = 𝜷·x
+
+    In the above, s is viwed as a dynamic variable, and the goal of data
+    analysis is to identify the "latent maximum" 𝜇. The latent maximum is
+    constructed as a linear combination of observed features x.
+
+    Parameters
+    ----------
+    n_latent_features: int
+      The number of features in the vector x.
+
+    n_additive_features: int
+      The number of features in the vector x'.
+
+    maximum_noise_std: int
+      The standard deviation of the noise variable ε₁.
+
+    residual_std: int
+      The standard deviation of the noise variable ε₂.
+    """
     def __init__(
         self,
         n_latent_features=10,
@@ -43,10 +65,14 @@ class LatentMaximumDataGenerator:
 
 
 class LatentMaximumModel():
+    """Fit a latent maximum model of the form:
 
+        ŷ ≈ a (s - 𝜇)**2 + 𝜷'·x'
+        𝜇 = 𝜷·x
+    """
     def __init__(
         self,
-        learning_rate=0.001,
+        learning_rate=0.0001,
         rtol=0.0001,
         n_iter=25000
     ):
