@@ -81,8 +81,8 @@ class LatentMaximumModel():
         rtol=0.0001,
         n_iter=25000
     ):
-        self.latent_coefs = np.zeros(shape=10)
-        self.additive_coefs = np.zeros(shape=10)
+        self.latent_coefs = None
+        self.additive_coefs = None
         self.a = -0.5
         self.intercept = 0.0
         self.learning_rate = learning_rate
@@ -91,6 +91,7 @@ class LatentMaximumModel():
         self.losses: List[float] = []
 
     def fit(self, x: np.array, x_latent: np.array, x_additive: np.array, y: np.array):
+        self._initialize(x_latent, x_additive)
         for i in range(self.n_iter):
             self._update(x, x_latent, x_additive, y)
             if i >= 2 and self._has_converged():
@@ -107,6 +108,10 @@ class LatentMaximumModel():
             + x_additive @ self.additive_coefs
             + self.intercept
         )
+
+    def _initialize(self, x_additive, x_latent):
+        self.additive_coefs = np.zeros(shape=x_additive.shape[1])
+        self.latent_coefs = np.zeros(shape=x_latent.shape[1])
 
     def _update(self, x: np.array, x_latent: np.array, x_additive: np.array, y: np.array):
         N = len(x)
