@@ -109,7 +109,7 @@ class LatentMaximumModel():
             + self.intercept
         )
 
-    def _initialize(self, x_additive, x_latent):
+    def _initialize(self, x_latent, x_additive):
         self.additive_coefs = np.zeros(shape=x_additive.shape[1])
         self.latent_coefs = np.zeros(shape=x_latent.shape[1])
 
